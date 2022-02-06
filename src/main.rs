@@ -98,20 +98,41 @@ impl DeckBuilder {
     }
 }
 
+enum Status {
+    Win,
+    Loss,
+}
+
 struct Player {
     name: String,
     hands: (Card, Card), // 2 hands at most only when your turn arrives and you draw a hand from the deck
-    turn: bool
+    turn: bool,
+    status: Status,
+}
+
+enum Direction {
+    Clockwise,
+    Counterclockwise,
 }
 
 struct Game {
     deck: Deck,
-    players: Vec<Player>
+    reincarnation_card: Card,
+    players: Vec<Player>,
+    direction: Direction,
+    current_player: Player,
 }
 
-impl Game {
-    fn direction() {}
+trait GameSteps {
+    fn new() -> Game;
+    fn direction();
+    fn choose_initial_player();
 }
+
+// impl GameSteps for Game {
+//     fn new() -> Game {}
+//     fn direction() {}
+// }
 
 // [x] 0. Create a deck of 18 cards
 // [x] 1. Create cards Rank 1-8 x 2, Rank 9, 10 x 1 --- totaling 18 cards
