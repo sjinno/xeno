@@ -102,6 +102,7 @@ impl DeckBuilder {
 enum Status {
     Win,
     Loss,
+    Draw,
 }
 
 struct Player {
