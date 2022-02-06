@@ -47,17 +47,17 @@ impl From<i32> for Card {
 
 #[derive(Debug)]
 struct Deck {
-    cards: [Card; 18],
+    cards: [Card; DECK_SIZE],
 }
 
 struct DeckBuilder {
-    cards: [Card; 18],
+    cards: [Card; DECK_SIZE],
 }
 
 impl DeckBuilder {
     fn build() -> Deck {
         let mut deck = DeckBuilder {
-            cards: [Card::Nil; 18],
+            cards: [Card::Nil; DECK_SIZE],
         };
 
         let mut map = HashMap::<i32, u8>::new();
