@@ -72,23 +72,24 @@ impl DeckBuilder {
     }
 
     fn stack_or_continue(&mut self, i: &mut usize, num: i32, map: &mut HashMap<i32, u8>) {
+        let card: Card = num.into();
         match num {
             (1..=8) => {
                 if let Some(c) = map.get_mut(&num) {
-                    if *c != 1 {
+                    if *c != 1 && &self.cards[*i - 1] != &card {
                         *c += 1;
-                        self.cards[*i] = num.into();
+                        self.cards[*i] = card;
                         *i += 1;
                     }
                 } else {
                     map.insert(num, 0);
-                    self.cards[*i] = num.into();
+                    self.cards[*i] = card;
                     *i += 1;
                 }
             }
             9 | 10 => {
                 map.entry(num).or_insert_with(|| {
-                    self.cards[*i] = num.into();
+                    self.cards[*i] = card;
                     *i += 1;
                     0
                 });
