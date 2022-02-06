@@ -27,9 +27,9 @@ enum Card {
     Nil
 }
 
-impl Into<Card> for i32 {
-    fn into(self) -> Card {
-        match self {
+impl From<i32> for Card {
+    fn from(rank: i32) -> Self {
+        match rank {
             1 => Card::Boy,
             2 => Card::Soldier,
             3 => Card::FortuneTeller,
