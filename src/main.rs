@@ -12,7 +12,7 @@ fn main() {
 
 #[rustfmt::skip]
 #[allow(dead_code)]
-#[derive(Clone, Copy, Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Card {
     Boy           = 1,
     Soldier       = 2,
