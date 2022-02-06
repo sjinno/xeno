@@ -27,8 +27,8 @@ enum Card {
     Nil
 }
 
-impl From<i32> for Card {
-    fn from(rank: i32) -> Self {
+impl From<u8> for Card {
+    fn from(rank: u8) -> Self {
         match rank {
             1 => Card::Boy,
             2 => Card::Soldier,
