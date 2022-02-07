@@ -1,4 +1,7 @@
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    io::{self, Write},
+};
 
 use rand::Rng;
 
@@ -51,21 +54,88 @@ impl From<u8> for Card {
 }
 
 #[allow(dead_code)]
-
 #[derive(Debug)]
 enum Status {
     Win,
     Loss,
     Draw,
-    Pending,
+    Playing,
 }
 
-#[derive(Debug)]
+impl Default for Status {
+    fn default() -> Self {
+        Status::Playing
+    }
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Default)]
 struct Player {
     name: String,
     hands: (Card, Card), // 2 hands at most only when your turn arrives and you draw a hand from the deck
-    turn: bool,
     status: Status,
+}
+
+trait PlayerBuilder {
+    fn new() -> Player;
+    fn get_name() -> String;
+}
+
+impl PlayerBuilder for Player {
+    fn new() -> Self {
+        Player {
+            name: Player::get_name(),
+            ..Default::default()
+        }
+    }
+
+    fn get_name() -> String {
+        print!("name: ");
+        io::stdout().flush().unwrap();
+
+        let mut name = String::new();
+        io::stdin()
+            .read_line(&mut name)
+            .expect("Failed to read line");
+
+        name.pop();
+        name
+    }
+}
+
+impl Player {
+    fn set_initial_hand(&mut self, cards_drawn: &mut HashMap<Card, u8>) {
+        loop {
+            let card: Card = rand::thread_rng().gen_range(1..=10).into();
+            let mut is_set = false;
+            match card as u8 {
+                (1..=8) => {
+                    if let Some(c) = cards_drawn.get_mut(&card) {
+                        if *c != 1 {
+                            *c += 1;
+                            is_set = true;
+                        }
+                    } else {
+                        cards_drawn.insert(card, 0);
+                        is_set = true;
+                    }
+                }
+                9 | 10 => {
+                    cards_drawn.entry(card).or_insert(0);
+                    is_set = true;
+                }
+                _ => {}
+            }
+            if is_set {
+                self.hands.0 = card;
+                break;
+            }
+        }
+    }
+
+    // fn draw_card(&mut self, cards_drawn: &mut HashMap<Card, u8>) -> Card {
+    //     rand::thread_rng().gen_range(1..=10).into()
+    // }
 }
 
 #[derive(Debug)]
@@ -80,22 +150,22 @@ impl Default for Direction {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Default)]
 struct Game {
     // deck: Deck,
     cards_drawn: HashMap<Card, u8>, // <rank, counter>
-    num_of_cards_left: u8,
     reincarnation_card: Card,
-    direction: Direction,
     players: [Option<Player>; MAX_NUM_OF_PLAYERS],
+    num_of_cards_left: u8,
+    direction: Direction,
     current_player: usize,
 }
 
 trait GameSteps {
     fn new() -> Game;
     fn setup() -> Game;
-    // fn choose_direction();
-    // fn choose_initial_player();
+    fn set_direction(num_of_players: usize) -> Direction;
     // fn begin();
     // fn restart();
 }
@@ -118,10 +188,30 @@ impl GameSteps for Game {
 
         // 4. Set `players`
         let mut players: [Option<Player>; MAX_NUM_OF_PLAYERS] = Default::default();
-        for i in 0..MAX_NUM_OF_PLAYERS {
-            // register_user();
-            // players[i] = Some(player);
+        let mut player_count = 0;
+        loop {
+            let mut player_builder = Player::new();
+
+            if player_builder.name.is_empty()
+                && player_count > 1
+                && player_count < MAX_NUM_OF_PLAYERS
+            {
+                break;
+            }
+
+            player_builder.set_initial_hand(&mut cards_drawn);
+            num_of_cards_left -= 1;
+
+            players[player_count] = Some(player_builder);
+            player_count += 1;
         }
+
+        // 3. Set `direction`
+        //    Process user input or default(clockwise)
+        //    If two players, default is fine.
+        //    -  true: clockwise
+        //    - false: counterclockwise
+        let direction = Game::set_direction(players.len());
 
         // 5. Set the player to start from
         let current_player = rand::thread_rng().gen_range(
@@ -137,16 +227,35 @@ impl GameSteps for Game {
             ),
         );
 
-        Self {
+        Game {
             cards_drawn,
             num_of_cards_left,
             reincarnation_card,
+            players,
+            direction,
             current_player,
-            ..Default::default()
         }
     }
 
-    // fn direction() {}
+    fn set_direction(num_of_players: usize) -> Direction {
+        if num_of_players > 2 {
+            print!("Type \"c\" for clockwise, \"cc\" for counterclockwise: ");
+            io::stdout().flush().unwrap();
+
+            let mut inp = String::new();
+            io::stdin()
+                .read_line(&mut inp)
+                .expect("Failed to read line");
+
+            if inp.as_str() == "c" {
+                Direction::Clockwise
+            } else {
+                Direction::Counterclockwise
+            }
+        } else {
+            Direction::Clockwise
+        }
+    }
 }
 
 // [x] 0. Create a deck of 18 cards
