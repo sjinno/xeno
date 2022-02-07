@@ -63,9 +63,13 @@ impl GameSteps for Game {
             }
 
             player_builder.set_initial_hand(&mut cards_drawn);
+            players[player_count] = Some(player_builder);
             num_of_cards_left -= 1;
 
-            players[player_count] = Some(player_builder);
+            if player_count == 3 {
+                break;
+            }
+
             player_count += 1;
         }
 
