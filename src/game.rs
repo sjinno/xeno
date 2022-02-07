@@ -62,7 +62,7 @@ impl GameSteps for Game {
                 break;
             }
 
-            player_builder.set_initial_hand(&mut cards_drawn);
+            player_builder.draw(&mut cards_drawn);
             players[player_count] = Some(player_builder);
             num_of_cards_left -= 1;
 

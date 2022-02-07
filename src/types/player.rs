@@ -44,7 +44,7 @@ impl PlayerBuilder for Player {
 }
 
 impl Player {
-    pub fn set_initial_hand(&mut self, cards_drawn: &mut HashMap<Card, u8>) {
+    pub fn draw(&mut self, cards_drawn: &mut HashMap<Card, u8>) {
         loop {
             let card: Card = rand::thread_rng().gen_range(1..=10).into();
             let mut is_set = false;
