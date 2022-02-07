@@ -12,7 +12,7 @@ use rand::Rng;
 #[derive(Debug, Default)]
 pub struct Player {
     pub name: String,
-    hands: (Card, Card), // 2 hands at most only when your turn arrives and you draw a hand from the deck
+    hands: [Card; 2], // 2 hands at most only when your turn arrives and you draw a hand from the deck
     status: Status,
 }
 
@@ -67,13 +67,13 @@ impl Player {
                 _ => {}
             }
             if is_set {
-                self.hands.0 = card;
+                if self.hands[0] == Card::Nil {
+                    self.hands[0] = card;
+                } else {
+                    self.hands[1] = card;
+                }
                 break;
             }
         }
     }
-
-    // fn draw_card(&mut self, cards_drawn: &mut HashMap<Card, u8>) -> Card {
-    //     rand::thread_rng().gen_range(1..=10).into()
-    // }
 }
