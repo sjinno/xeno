@@ -50,59 +50,7 @@ impl From<u8> for Card {
     }
 }
 
-// #[derive(Debug)]
-// struct Deck {
-//     cards: [Card; DECK_SIZE],
-// }
-
-// struct DeckBuilder {
-//     cards: [Card; DECK_SIZE],
-// }
-
-// impl DeckBuilder {
-//     fn build() -> Deck {
-//         let mut deck = DeckBuilder {
-//             cards: [Card::Nil; DECK_SIZE],
-//         };
-
-//         let mut map = HashMap::<u8, u8>::new();
-//         let mut rng = rand::thread_rng();
-//         let mut i = 0; // index, also plays a role as counter
-//         while i != DECK_SIZE {
-//             let num: u8 = rng.gen_range(1..=10);
-//             deck.stack_or_continue(&mut i, num, &mut map);
-//         }
-
-//         Deck { cards: deck.cards }
-//     }
-
-//     fn stack_or_continue(&mut self, i: &mut usize, num: u8, map: &mut HashMap<u8, u8>) {
-//         let card: Card = num.into();
-//         match num {
-//             (1..=8) => {
-//                 if let Some(c) = map.get_mut(&num) {
-//                     if *c != 1 && &self.cards[*i - 1] != &card {
-//                         *c += 1;
-//                         self.cards[*i] = card;
-//                         *i += 1;
-//                     }
-//                 } else {
-//                     map.insert(num, 0);
-//                     self.cards[*i] = card;
-//                     *i += 1;
-//                 }
-//             }
-//             9 | 10 => {
-//                 map.entry(num).or_insert_with(|| {
-//                     self.cards[*i] = card;
-//                     *i += 1;
-//                     0
-//                 });
-//             }
-//             _ => {}
-//         }
-//     }
-// }
+#[allow(dead_code)]
 
 #[derive(Debug)]
 enum Status {
@@ -168,14 +116,7 @@ impl GameSteps for Game {
         let reincarnation_card: Card = rand::thread_rng().gen_range(1..=10).into();
         cards_drawn.insert(reincarnation_card, 0);
 
-        // 3. Set `direction`
-        //    Process user input or default(clockwise)
-
         // 4. Set `players`
-        //     - name: String,
-        //     - hands: (Card, Card),
-        //     - turn: bool,
-        //     - status: Status,
         let mut players: [Option<Player>; MAX_NUM_OF_PLAYERS] = Default::default();
         for i in 0..MAX_NUM_OF_PLAYERS {
             // register_user();
