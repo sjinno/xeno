@@ -45,9 +45,9 @@ impl PlayerBuilder for Player {
 
 impl Player {
     pub fn draw(&mut self, cards_drawn: &mut HashMap<Card, u8>) {
-        loop {
+        let mut is_set = false;
+        while !is_set {
             let card: Card = rand::thread_rng().gen_range(1..=10).into();
-            let mut is_set = false;
 
             match card as u8 {
                 (1..=8) => {
@@ -67,7 +67,7 @@ impl Player {
                         is_set = true;
                     }
                 }
-                _ => {}
+                _ => unreachable!("Should not ever reach here"),
             }
 
             if is_set {
