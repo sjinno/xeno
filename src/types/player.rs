@@ -12,7 +12,7 @@ use rand::Rng;
 #[derive(Debug, Default)]
 pub struct Player {
     pub name: String,
-    hand: Card,
+    pub hand: Card,
     status: Status,
 }
 

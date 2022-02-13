@@ -4,8 +4,11 @@ use game::{Game, GameSteps};
 mod types;
 
 fn main() {
-    let game = Game::new();
-    dbg!(game);
+    let mut game = Game::new();
+    // dbg!(game);
+    eprintln!("{:#?}", game);
+
+    game.begin();
 }
 
 // [x] 0. Create a deck of 18 cards

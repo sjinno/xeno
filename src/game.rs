@@ -109,3 +109,110 @@ impl GameSteps for Game {
         }
     }
 }
+
+impl Game {
+    pub fn begin(&mut self) {
+        // Destructuring `Game` fields
+        match self {
+            Game {
+                cards_drawn: cd,
+                reincarnation_card: rc,
+                players,
+                num_of_cards_left: num,
+                direction: dir,
+                current_player: cp,
+            } => {
+                let bound = players.len() - 1;
+
+                while *num > 0 {
+                    println!("{}'s turn", players[*cp].name);
+
+                    let card_drawn = players[*cp].draw(cd).unwrap();
+                    *num -= 1;
+
+                    // Choose your card
+                    Game::show_cards(&players[*cp].hand, &card_drawn);
+                    let mut chosen_card = String::new();
+                    print!(
+                        "Choose between {:?} and {:?} to play: ",
+                        players[*cp].hand, card_drawn
+                    );
+                    io::stdout().flush().unwrap();
+                    io::stdin()
+                        .read_line(&mut chosen_card)
+                        .expect("Faild to read line");
+
+                    match chosen_card.trim().parse::<usize>() {
+                        _ => {}
+                    }
+
+                    // Choose the player you want to make a move against
+                    Game::show_players(players, cp, &bound);
+                    let mut chosen_player = String::new();
+                    println!(
+                        "\"{:?}\" was played on \"{}\"",
+                        players[*cp].hand, players[0].name
+                    );
+                    io::stdout().flush().unwrap();
+                    io::stdin()
+                        .read_line(&mut chosen_player)
+                        .expect("Faild to read line");
+
+                    match chosen_player.trim().parse::<usize>() {
+                        _ => {}
+                    }
+
+                    players[*cp].hand = card_drawn;
+                    println!("{:?}", players[*cp]);
+
+                    println!("==========");
+
+                    Game::set_next_player(dir, cp, &bound);
+                }
+            }
+        }
+
+        println!("Game over");
+        // x 1. Start from the player with the current player number
+        // x 2. Loop -
+        // 3. Game ends when there are no cards left and no winner
+        // 4. Player draws a card
+        // 5. Player makes a move (the card's skill activates)
+        // 6. Next player?
+    }
+
+    fn set_next_player(dir: &Direction, cp: &mut usize, bound: &usize) {
+        match *dir {
+            Direction::Clockwise => {
+                if *cp < *bound {
+                    *cp += 1;
+                } else {
+                    *cp = 0;
+                }
+            }
+            Direction::Counterclockwise => {
+                if *cp > 0 {
+                    *cp -= 1;
+                } else {
+                    *cp = *bound;
+                }
+            }
+        }
+    }
+
+    fn show_cards(hand1: &Card, hand2: &Card) {
+        println!("1: {:?}", hand1);
+        println!("2: {:?}", hand2);
+    }
+
+    fn show_players(players: &[Player], cp: &usize, bound: &usize) {
+        let mut c = 1;
+        for i in 0..=*bound {
+            if i == *cp {
+                continue;
+            }
+            println!("{}: {}", c, players[i].name);
+            c += 1;
+        }
+    }
+}
