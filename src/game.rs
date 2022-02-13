@@ -28,8 +28,7 @@ pub struct Game {
 pub trait GameSteps {
     fn new() -> Game;
     fn setup() -> Game;
-    fn set_direction(num_of_players: usize) -> Direction;
-    // fn begin();
+    fn set_direction(num_of_players: &usize) -> Direction;
     // fn restart();
 }
 
@@ -78,7 +77,7 @@ impl GameSteps for Game {
         //    If two players, default is fine.
         //    -  true: clockwise
         //    - false: counterclockwise
-        let direction = Game::set_direction(players.len());
+        let direction = Game::set_direction(&players.len());
 
         // 5. Set the player to start from
         let current_player = rand::thread_rng().gen_range(
@@ -104,8 +103,8 @@ impl GameSteps for Game {
         }
     }
 
-    fn set_direction(num_of_players: usize) -> Direction {
-        if num_of_players > 2 {
+    fn set_direction(num_of_players: &usize) -> Direction {
+        if *num_of_players > 2 {
             print!("Type \"c\" for clockwise, \"cc\" for counterclockwise: ");
             io::stdout().flush().unwrap();
 
