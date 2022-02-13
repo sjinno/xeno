@@ -19,7 +19,7 @@ pub struct Game {
     // deck: Deck,
     cards_drawn: HashMap<Card, u8>, // <rank, counter>
     reincarnation_card: Card,
-    players: [Option<Player>; MAX_NUM_OF_PLAYERS],
+    players: Vec<Player>,
     num_of_cards_left: u8,
     direction: Direction,
     current_player: usize,
@@ -49,20 +49,17 @@ impl GameSteps for Game {
         cards_drawn.insert(reincarnation_card, 0);
 
         // 4. Set `players`
-        let mut players: [Option<Player>; MAX_NUM_OF_PLAYERS] = Default::default();
+        let mut players = Vec::<Player>::new();
         let mut player_count = 0;
         loop {
-            let mut player_builder = Player::new();
+            let mut player = Player::new();
 
-            if player_builder.name.is_empty()
-                && player_count > 1
-                && player_count < MAX_NUM_OF_PLAYERS
-            {
+            if player.name.is_empty() && player_count > 1 && player_count < MAX_NUM_OF_PLAYERS {
                 break;
             }
 
-            player_builder.draw(&mut cards_drawn);
-            players[player_count] = Some(player_builder);
+            player.draw(&mut cards_drawn);
+            players.push(player);
             num_of_cards_left -= 1;
 
             if player_count == 3 {
@@ -80,18 +77,7 @@ impl GameSteps for Game {
         let direction = Game::set_direction(&players.len());
 
         // 5. Set the player to start from
-        let current_player = rand::thread_rng().gen_range(
-            0..=players.iter().fold(
-                0,
-                |acc, player| {
-                    if let Some(_) = player {
-                        acc + 1
-                    } else {
-                        acc
-                    }
-                },
-            ),
-        );
+        let current_player = rand::thread_rng().gen_range(0..=players.len());
 
         Game {
             cards_drawn,

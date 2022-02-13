@@ -76,7 +76,6 @@ impl Player {
                 } else {
                     self.hands[1] = card;
                 }
-                break;
             }
         }
     }
