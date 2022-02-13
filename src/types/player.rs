@@ -12,7 +12,7 @@ use rand::Rng;
 #[derive(Debug, Default)]
 pub struct Player {
     pub name: String,
-    hands: [Card; 2], // 2 hands at most only when your turn arrives and you draw a hand from the deck
+    hand: Card,
     status: Status,
 }
 
@@ -44,11 +44,12 @@ impl PlayerBuilder for Player {
 }
 
 impl Player {
-    pub fn draw(&mut self, cards_drawn: &mut HashMap<Card, u8>) {
+    pub fn draw(&mut self, cards_drawn: &mut HashMap<Card, u8>) -> Option<Card> {
+        let mut card = Card::Nil;
         let mut is_set = false;
-        while !is_set {
-            let card: Card = rand::thread_rng().gen_range(1..=10).into();
 
+        while !is_set {
+            card = rand::thread_rng().gen_range(1..=10).into();
             match card as u8 {
                 (1..=8) => {
                     if let Some(c) = cards_drawn.get_mut(&card) {
@@ -69,14 +70,13 @@ impl Player {
                 }
                 _ => unreachable!("Should not ever reach here"),
             }
+        }
 
-            if is_set {
-                if self.hands[0] == Card::Nil {
-                    self.hands[0] = card;
-                } else {
-                    self.hands[1] = card;
-                }
-            }
+        if self.hand == Card::Nil {
+            self.hand = card;
+            None
+        } else {
+            Some(card)
         }
     }
 }
