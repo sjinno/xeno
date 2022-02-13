@@ -2,7 +2,7 @@ use super::card::Card;
 use super::status::Status;
 
 use std::{
-    collections::HashMap,
+    collections::{hash_map::Entry, HashMap},
     io::{self, Write},
 };
 
@@ -48,6 +48,7 @@ impl Player {
         loop {
             let card: Card = rand::thread_rng().gen_range(1..=10).into();
             let mut is_set = false;
+
             match card as u8 {
                 (1..=8) => {
                     if let Some(c) = cards_drawn.get_mut(&card) {
@@ -61,11 +62,14 @@ impl Player {
                     }
                 }
                 9 | 10 => {
-                    cards_drawn.entry(card).or_insert(0);
-                    is_set = true;
+                    if let Entry::Vacant(e) = cards_drawn.entry(card) {
+                        e.insert(0);
+                        is_set = true;
+                    }
                 }
                 _ => {}
             }
+
             if is_set {
                 if self.hands[0] == Card::Nil {
                     self.hands[0] = card;
