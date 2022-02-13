@@ -77,7 +77,7 @@ impl GameSteps for Game {
         let direction = Game::set_direction(&players.len());
 
         // 5. Set the player to start from
-        let current_player = rand::thread_rng().gen_range(0..=players.len());
+        let current_player = rand::thread_rng().gen_range(0..players.len());
 
         Game {
             cards_drawn,
