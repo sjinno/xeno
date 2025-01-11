@@ -1,0 +1,113 @@
+{
+  "gameInfo": {
+    "cardTypes": [
+      {
+        "rank": 10,
+        "name": "Hero",
+        "effect": "Hiding, Reincarnation",
+        "description": "Cannot be placed in the play area and the player drops if forced to discard it. If the player drops out due to a power other than the Emperor, the player can get back into the game with the reincarnation card.",
+        "count": 1
+      },
+      {
+        "rank": 9,
+        "name": "Emperor",
+        "effect": "Public Execution",
+        "description": "Force the designated player to draw a card from the deck and disclose both cards. Then designate one of them to be discarded.",
+        "count": 1
+      },
+      {
+        "rank": 8,
+        "name": "Spirit",
+        "effect": "Interchanging",
+        "description": "Exchange hands with a designated player.",
+        "count": 2
+      },
+      {
+        "rank": 7,
+        "name": "Scholar",
+        "effect": "Selection",
+        "description": "The player draws three cards from the deck at the next turn instead of one card, selects one, and returns the rest to the deck.",
+        "count": 2
+      },
+      {
+        "rank": 6,
+        "name": "Noble",
+        "effect": "Showdown",
+        "description": "Discloses the hand of a designated player. The player with the smaller number drops out. If the numbers are the same, both drop out.",
+        "count": 2
+      },
+      {
+        "rank": 5,
+        "name": "Death",
+        "effect": "Infectious Disease",
+        "description": "Forces a designated player to draw a card from the deck. Specifies a card from their hand to be removed.",
+        "count": 2
+      },
+      {
+        "rank": 4,
+        "name": "Maiden",
+        "effect": "Guarding",
+        "description": "Disables the effects of any card's power on a player until the next turn.",
+        "count": 2
+      },
+      {
+        "rank": 3,
+        "name": "Fortune Teller",
+        "effect": "Seeing Through",
+        "description": "Check the hand of a designated player.",
+        "count": 2
+      },
+      {
+        "rank": 2,
+        "name": "Soldier",
+        "effect": "Investigation",
+        "description": "Can force a designated player to drop out if the player's hand is guessed correctly.",
+        "count": 2
+      },
+      {
+        "rank": 1,
+        "name": "Boy",
+        "effect": "Revolution",
+        "description": "The first discard has no effect, but the second discard has the same power as the Emperor, 'Public Execution.'",
+        "count": 2
+      }
+    ],
+    "setup": {
+      "steps": [
+        "Mix 18 playing cards and place them face down on a table. This is called the deck.",
+        "Each player draws a card from the deck and holds it in their hand.",
+        "Once everyone has drawn, take one card from the deck and place it face down and sideways next to the deck. This is called the 'reincarnation card.'",
+        "Decide who plays first.",
+        "Go clockwise from the first player. Be careful not to unintentionally disclose your hand to other players."
+      ]
+    },
+    "gameplay": {
+      "steps": [
+        "The active player draws the card from the top of the deck and adds it to their hand.",
+        "The player chooses one card from their hand and places it in the play area, activating its power.",
+        "The played card is discarded, arranged face-up in a line for all players to see.",
+        "The turn ends after the power is activated, and the next player takes their turn in a clockwise order.",
+        "Repeat until all cards in the deck are gone or only one player remains."
+      ],
+      "specialRules": {
+        "dropOut": "If a player drops out due to a card's power, their hand is revealed and added to their discard pile.",
+        "designatedPlayer": "Certain card effects target specific players. The active player can choose any other player but cannot target themselves.",
+        "inactiveEffect": "If a card is forced to be discarded, its power does not activate. If no cards remain in the deck during an effect, the game ends."
+      }
+    },
+    "endConditions": [
+      {
+        "condition": "The Deck Has Been Exhausted",
+        "description": "The game ends when there are no cards left in the deck after a player's turn. Players reveal their hands, and the highest card strength wins. A tie occurs if strengths are equal."
+      },
+      {
+        "condition": "One Player Remains",
+        "description": "If only one player remains while others have dropped out, they are declared the winner."
+      },
+      {
+        "condition": "Everyone Drops Out",
+        "description": "If all players drop out due to a tie during the Noble card's effect, the game ends in a draw."
+      }
+    ]
+  }
+}
