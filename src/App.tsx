@@ -1,10 +1,9 @@
-import './App.css';
-import { Button } from './components/ui/button';
+import { JoinPage } from './pages';
 
 function App() {
   return (
-    <main className="container">
-      <Button>Click me</Button>
+    <main className="px-8 py-4">
+      <JoinPage />
     </main>
   );
 }
