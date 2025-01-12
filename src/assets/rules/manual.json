@@ -92,18 +92,12 @@
       ]
     },
     "gameplay": {
-      "steps": [
-        "The active player draws the card from the top of the deck and adds it to their hand.",
-        "The player chooses one card from their hand and places it in the play area, activating its power.",
-        "The played card is discarded, arranged face-up in a line for all players to see.",
-        "The turn ends after the power is activated, and the next player takes their turn in a clockwise order.",
-        "Repeat until all cards in the deck are gone or only one player remains."
-      ],
-      "specialRules": {
-        "dropOut": "If a player drops out due to a card's power, their hand is revealed and added to their discard pile.",
-        "designatedPlayer": "Certain card effects target specific players. The active player can choose any other player but cannot target themselves.",
-        "inactiveEffect": "If a card is forced to be discarded, its power does not activate. If no cards remain in the deck during an effect, the game ends."
-      }
+      "rules": "This game progresses with steps called turns.\nThe active player draws the card from the top of deck and adds it to their hand.\nThen the player chooses one out of two cards in their hand, and places it in the play area.\nEach card has a power that the players have to adhere to. (If the power is activated.)\n​\nThe timing when the power is effective varies depending on the card.\nOnce the card is played it is discarded.\nEach player places the discarded cards in front of themselves.\nThey are discarded so that they are arranged facing up in a line from the left to the right so that everyone can know the order they were played.\nThese discarded cards are the key to guess other players' hands.\nThe turn is complete when the power has been used.\nNext, move clockwise to the next the player. The player on the left takes the next turn.\nRepeat the turns until all the cards in the deck are gone or there is only one player left.\n＊The reincarnation cards should not be used as the deck. They are used only when the \"Hero\" reincarnates.",
+      "specialRules": [
+        "Drop out:If a player drops out due to a card's power, their hand is revealed and added to their discard pile.",
+        "Designated Player:Certain card effects target specific players. The active player can choose any other player but cannot target themselves.",
+        "iInactive Effect:If a card is forced to be discarded, its power does not activate. If no cards remain in the deck during an effect, the game ends."
+      ]
     },
     "endConditions": [
       {
