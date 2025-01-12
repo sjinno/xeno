@@ -23,6 +23,8 @@ export const JoinPage = () => {
       await signInUser(name);
       await joinGroup(code);
       join(name);
+      setName('');
+      setCode('');
       setError(null);
     } catch (error) {
       console.error(`Failed to join: ${error}`);
