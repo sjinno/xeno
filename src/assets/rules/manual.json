@@ -6,6 +6,7 @@
         "name": "Hero",
         "effect": "Hiding, Reincarnation",
         "description": "Cannot be placed in the play area and the player drops if forced to discard it. If the player drops out due to a power other than the Emperor, the player can get back into the game with the reincarnation card.",
+        "about": "The Hero has the power to guide the people but cannot show herself in front of the public.\nIf found by the Emperor, she will be executed and removed immediately.\nHowever, if the player drops out by someone other than the Emperor, they can revive using the reincarnation card with the power of reincarnation.\n(If a player drops out due to the power of the Death, the Soldier or the Boy card, discard all existing cards in hand, and then take the reincarnation card to return to the game.)",
         "count": 1
       },
       {
@@ -13,6 +14,7 @@
         "name": "Emperor",
         "effect": "Public Execution",
         "description": "Force the designated player to draw a card from the deck and disclose both cards. Then designate one of them to be discarded.",
+        "about": "The Emperor is trying to find the Hero and execute her as soon as possible, because she causes disorder to the land with her new teachings.\nHe can execute the Hero with a sword which has been passed down in the royal family and prevent the Hero's reincarnation.",
         "count": 1
       },
       {
@@ -20,6 +22,7 @@
         "name": "Spirit",
         "effect": "Interchanging",
         "description": "Exchange hands with a designated player.",
+        "about": "The Spirit has been watching the land since ancient times and it is sorrowful for the repeated conflicts among humans.\nIt hopes to use its special power to let people experience “an interexchange” in their dreams and understand each other's feelings.",
         "count": 2
       },
       {
@@ -27,6 +30,7 @@
         "name": "Scholar",
         "effect": "Selection",
         "description": "The player draws three cards from the deck at the next turn instead of one card, selects one, and returns the rest to the deck.",
+        "about": "The Scholar presents three predictions for the land.\nThe player chooses a card that is most advantageous.\nIf there are less than three cards left in the deck, take all cards and select one.\n(The next player will shuffle the returned cards in the deck. After that, discard one of the two cards and use its power.)",
         "count": 2
       },
       {
@@ -34,6 +38,7 @@
         "name": "Noble",
         "effect": "Showdown",
         "description": "Discloses the hand of a designated player. The player with the smaller number drops out. If the numbers are the same, both drop out.",
+        "about": "The noble is demanding an early settlement for the stability of the land.\nIf the number is the same as the player who you challenged, both will drop out.\nIf there are no other players left, the game will end in a draw.",
         "count": 2
       },
       {
@@ -41,6 +46,7 @@
         "name": "Death",
         "effect": "Infectious Disease",
         "description": "Forces a designated player to draw a card from the deck. Specifies a card from their hand to be removed.",
+        "about": "An infectious disease called \"The Death\" is pervasive throughout the land.\nThe Death takes a life without rhyme or reason.\n(Make sure to shuffle the cards in hand before the card is specified by the other player.)",
         "count": 2
       },
       {
@@ -48,6 +54,7 @@
         "name": "Maiden",
         "effect": "Guarding",
         "description": "Disables the effects of any card's power on a player until the next turn.",
+        "about": "The Maiden generates a fog with prayer that guards the target from attacks.\nA player can choose another player to be guarded from another player and that player will be guarded from a card`s power.",
         "count": 2
       },
       {
@@ -55,6 +62,7 @@
         "name": "Fortune Teller",
         "effect": "Seeing Through",
         "description": "Check the hand of a designated player.",
+        "about": "The fortune teller has the power of seeing through things.\nOA player can check the hand of a designated player.\nDo not disclose the outcome of seeing the card to other players.",
         "count": 2
       },
       {
@@ -62,6 +70,7 @@
         "name": "Soldier",
         "effect": "Investigation",
         "description": "Can force a designated player to drop out if the player's hand is guessed correctly.",
+        "about": "The Soldier is investigating under the order of the Emperor.\nThe designated player shall answer whether or not the declaration made by the active player is right.\nIf it was right, the player shall discard the hand and drop out.\nOtherwise, the player shall only say that it was incorrect.\nThere is no need to disclose the card.",
         "count": 2
       },
       {
@@ -69,6 +78,7 @@
         "name": "Boy",
         "effect": "Revolution",
         "description": "The first discard has no effect, but the second discard has the same power as the Emperor, 'Public Execution.'",
+        "about": "The young Boy is powerless.\nHowever, he eventually grows up and becomes an emperor with the teachings of the Hero.\nIt seems to be difficult to use the royal sword for the newly enthroned emperor.\nIf he stabs a Hero, the Hero will revive using the reincarnation card.\nOn the second discard he has the same power as the Emperor, \"Public Execution,\" but the RANK is 1 for the player who is holding the card.\nThe player who discards second does not necessarily need to be the same player discarded the first card.",
         "count": 2
       }
     ],
