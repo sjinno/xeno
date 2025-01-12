@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { joinGroup, signInUser } from '@/firebase/auth';
+import { useGameStore } from '@/stores';
 import { useState } from 'react';
 
 export const JoinPage = () => {
@@ -8,6 +9,8 @@ export const JoinPage = () => {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const { join } = useGameStore();
 
   const handleJoin = async () => {
     if (!name.trim() || !code.trim()) {
@@ -19,9 +22,10 @@ export const JoinPage = () => {
     try {
       await signInUser(name);
       await joinGroup(code);
+      join(name);
       setError(null);
     } catch (error) {
-      throw new Error(`Failed to join: ${(error as Error).message}`);
+      console.error(`Failed to join: ${error}`);
     } finally {
       setLoading(false);
     }
