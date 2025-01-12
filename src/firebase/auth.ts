@@ -3,6 +3,8 @@ import { auth, db } from './firebase';
 import { signInAnonymously } from 'firebase/auth';
 
 export async function signInUser(name: string): Promise<string> {
+  // TODO: check if the same name already exists in players
+
   try {
     await signInAnonymously(auth);
     return name;
@@ -19,8 +21,7 @@ export async function signInUser(name: string): Promise<string> {
  */
 export async function joinGroup(code: string) {
   if (!auth.currentUser) {
-    console.log('No user is signed in.');
-    return;
+    throw new Error('No user is signed in.');
   }
 
   try {
@@ -45,12 +46,12 @@ export async function joinGroup(code: string) {
 
         console.log('Successfully joined the group!');
       } else {
-        console.log('Incorrect code!');
+        throw new Error('Incorrect code!');
       }
     } else {
-      console.log('Group does not exist.');
+      throw new Error('Group does not exist.');
     }
   } catch (error) {
-    console.error('Error joining group:', error);
+    throw new Error(`Error joining group: ${error}`);
   }
 }
