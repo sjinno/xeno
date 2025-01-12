@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useGameStore } from '@/stores';
 
 export const GamePage = () => {
-  const [players, setPlayers] = useState<string[]>([]);
+  const { players } = useGameStore();
 
   return (
     <div>
