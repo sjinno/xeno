@@ -1,7 +1,7 @@
-import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, writeBatch } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { GAME_PATH, GAME_PRIVATE_ID } from '@/constants';
+import { GAME_PATH, GAME_PRIVATE_ID, GAME_PUBLIC_ID } from '@/constants';
 
 export async function signInUser() {
   try {
@@ -22,34 +22,48 @@ export async function joinGroup(name: string, code: string) {
     throw new Error('No user is signed in.');
   }
 
-  try {
-    const gamePrivateRef = doc(db, GAME_PATH, GAME_PRIVATE_ID);
-    const gamePrivateSnap = await getDoc(gamePrivateRef);
+  // Initialize the batch
+  const batch = writeBatch(db);
 
-    if (gamePrivateSnap.exists()) {
-      const groupData = gamePrivateSnap.data();
+  const gamePrivateRef = doc(db, GAME_PATH, GAME_PRIVATE_ID);
+  const gamePrivateSnap = await getDoc(gamePrivateRef);
 
-      // Validate code
-      if (groupData.code === code) {
-        const uid = auth.currentUser.uid;
+  const gamePublicRef = doc(db, GAME_PATH, GAME_PUBLIC_ID);
 
-        const playerDetail = {
-          name,
-          uid,
-        };
+  if (gamePrivateSnap.exists()) {
+    const groupData = gamePrivateSnap.data();
 
-        // Add user to group players
-        await updateDoc(gamePrivateRef, {
-          players: arrayUnion(playerDetail),
+    // Validate code
+    if (groupData.code === code) {
+      const uid = auth.currentUser.uid;
+
+      const playerDetail = {
+        name,
+        uid,
+      };
+
+      // Add operations to the batch
+      {
+        batch.update(gamePublicRef, {
+          players: arrayUnion(name),
         });
 
-        console.log('Successfully joined the group!');
-      } else {
-        throw new Error('Incorrect code!');
+        // Add user to game playerDetails
+        batch.update(gamePrivateRef, {
+          playerDetails: arrayUnion(playerDetail),
+        });
       }
+
+      console.log('Successfully joined the group!');
     } else {
-      throw new Error('Group does not exist.');
+      throw new Error('Incorrect code!');
     }
+  } else {
+    throw new Error('Group does not exist.');
+  }
+
+  try {
+    await batch.commit();
   } catch (error) {
     throw new Error(`Error joining group: ${error}`);
   }
