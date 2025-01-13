@@ -3,22 +3,22 @@ import { updateStatus } from '@/firebase';
 import { useGameStore } from '@/stores';
 import { useNavigate } from 'react-router';
 
-export const GamePage = () => {
+export const ResultPage = () => {
   const { status } = useGameStore();
   const navigate = useNavigate();
 
   return (
-    <div className="pt-6">
-      <h2 className="bg-purple-100 font-bold">Game Page</h2>
+    <>
+      <h2 className="bg-sky-100 font-bold">Result Page</h2>
       <Button
-        disabled={status !== 'ongoing'}
+        disabled={status === 'waiting'}
         onClick={async () => {
-          await updateStatus('finished');
-          navigate('/game/result');
+          await updateStatus('waiting');
+          navigate('/lounge');
         }}
       >
-        End!
+        Back to Lounge
       </Button>
-    </div>
+    </>
   );
 };

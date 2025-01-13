@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { updateStatus } from '@/firebase';
 import { useGameStore } from '@/stores';
+import { useNavigate } from 'react-router';
 
 export const LoungePage = () => {
   const { players, status } = useGameStore();
-
   const isGameReady = players.length > 1 && status === 'waiting';
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -27,21 +29,12 @@ export const LoungePage = () => {
       </div>
       <Button
         disabled={!isGameReady}
-        onClick={async () => await updateStatus('ongoing')}
+        onClick={async () => {
+          await updateStatus('ongoing');
+          navigate('/game');
+        }}
       >
         Play!
-      </Button>
-      <Button
-        disabled={status !== 'ongoing'}
-        onClick={async () => await updateStatus('finished')}
-      >
-        End!
-      </Button>
-      <Button
-        disabled={status === 'waiting'}
-        onClick={async () => await updateStatus('waiting')}
-      >
-        Back to Lounge
       </Button>
     </div>
   );

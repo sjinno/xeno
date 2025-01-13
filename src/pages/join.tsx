@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { joinGroup, signInUser } from '@/firebase/auth';
 import { useGameStore } from '@/stores';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 interface ValidationError {
   name: string | null;
@@ -20,6 +21,8 @@ export const JoinPage = () => {
 
   const { players } = useGameStore();
   const isFull = players.length === 4;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (players.includes(name)) {
@@ -49,6 +52,7 @@ export const JoinPage = () => {
       setName('');
       setCode('');
       setError({ name: null, code: null });
+      navigate('/lounge');
     } catch (error) {
       console.error(`Failed to join: ${error}`);
       setError((prev) => ({ ...prev, code: (error as Error).message }));
