@@ -69,6 +69,6 @@ export async function joinGroup(name: string, code: string) {
   try {
     await batch.commit();
   } catch (error) {
-    throw new Error(`Error joining group: ${error}`);
+    throw new Error(`Failed to join group: ${error}`);
   }
 }
