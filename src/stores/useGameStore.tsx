@@ -17,7 +17,7 @@ let unsubscribe: (() => void) | null = null;
 
 export const useGameStore = create<GameState>((set) => ({
   players: [],
-  status: null,
+  status: 'waiting',
 
   subscribeToPublicData: () => {
     // Unsubscribe from any existing listener
@@ -30,11 +30,11 @@ export const useGameStore = create<GameState>((set) => ({
     unsubscribe = onSnapshot(publicDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const { players, status } = docSnapshot.data() as PublicGameData;
-        console.log('shohei - players', players.toString());
+        console.log('shohei - players, status', { players, status });
         set({ players, status }); // Update Zustand state
       } else {
         console.error('Document does not exist!');
-        set({ players: [], status: null }); // Reset state if document doesn't exist
+        set({ players: [], status: 'waiting' }); // Reset state if document doesn't exist
       }
     });
   },
