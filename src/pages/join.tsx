@@ -19,7 +19,7 @@ export const JoinPage = () => {
   const [loading, setLoading] = useState(false);
 
   const { players, join } = useGameStore();
-  const isFull = players.length > 4;
+  const isFull = players.length === 4;
 
   useEffect(() => {
     if (players.includes(name)) {
