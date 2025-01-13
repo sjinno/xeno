@@ -1,5 +1,5 @@
 import { GameListener } from './components/game';
-import { LoungePage, JoinPage } from './pages';
+import { LoungePage, GamePage, JoinPage } from './pages';
 
 function App() {
   return (
@@ -7,6 +7,7 @@ function App() {
       <JoinPage />
       <LoungePage />
       <GameListener />
+      <GamePage />
     </main>
   );
 }
