@@ -1,13 +1,11 @@
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { signInAnonymously } from 'firebase/auth';
+import { GAME_PATH, GAME_PRIVATE_ID } from '@/constants';
 
-export async function signInUser(name: string): Promise<string> {
-  // TODO: check if the same name already exists in players
-
+export async function signInUser() {
   try {
     await signInAnonymously(auth);
-    return name;
   } catch (error) {
     throw new Error(
       `Failed to sign in anonymously: ${(error as Error).message}`
@@ -19,29 +17,30 @@ export async function signInUser(name: string): Promise<string> {
  * Joins a group if the correct passphrase is provided.
  * @param {string} code - The code entered by the user.
  */
-export async function joinGroup(code: string) {
+export async function joinGroup(name: string, code: string) {
   if (!auth.currentUser) {
     throw new Error('No user is signed in.');
   }
 
   try {
-    const groupRef = doc(
-      db,
-      import.meta.env.VITE_GROUP_PATH,
-      import.meta.env.VITE_GROUP_ID
-    );
-    const groupSnap = await getDoc(groupRef);
+    const gamePrivateRef = doc(db, GAME_PATH, GAME_PRIVATE_ID);
+    const gamePrivateSnap = await getDoc(gamePrivateRef);
 
-    if (groupSnap.exists()) {
-      const groupData = groupSnap.data();
+    if (gamePrivateSnap.exists()) {
+      const groupData = gamePrivateSnap.data();
 
       // Validate code
       if (groupData.code === code) {
-        const userId = auth.currentUser.uid;
+        const uid = auth.currentUser.uid;
+
+        const playerDetail = {
+          name,
+          uid,
+        };
 
         // Add user to group players
-        await updateDoc(groupRef, {
-          players: arrayUnion(userId),
+        await updateDoc(gamePrivateRef, {
+          players: arrayUnion(playerDetail),
         });
 
         console.log('Successfully joined the group!');

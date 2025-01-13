@@ -10,7 +10,7 @@ export const JoinPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { join } = useGameStore();
+  const { players, join } = useGameStore();
 
   const handleJoin = async () => {
     if (!name.trim() || !code.trim()) {
@@ -18,10 +18,16 @@ export const JoinPage = () => {
       return;
     }
 
+    if (players.includes(name)) {
+      setError('Name is already taken.');
+      return;
+    }
+
     setLoading(true);
+
     try {
-      await signInUser(name);
-      await joinGroup(code);
+      await signInUser();
+      await joinGroup(name, code);
       join(name);
       setName('');
       setCode('');
