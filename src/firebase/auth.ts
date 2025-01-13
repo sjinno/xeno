@@ -4,6 +4,10 @@ import { signInAnonymously } from 'firebase/auth';
 import { GAME_PATH, GAME_PRIVATE_ID, GAME_PUBLIC_ID } from '@/constants';
 
 export async function signInUser() {
+  if (auth.currentUser !== null) {
+    throw new Error("You're already signed in!");
+  }
+
   try {
     await signInAnonymously(auth);
   } catch (error) {
