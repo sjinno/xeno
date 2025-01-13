@@ -1,7 +1,11 @@
+import { Button } from '@/components/ui/button';
+import { updateStatus } from '@/firebase';
 import { useGameStore } from '@/stores';
 
 export const LoungePage = () => {
-  const { players } = useGameStore();
+  const { players, status } = useGameStore();
+
+  const isGameReady = players.length > 1 && status === 'waiting';
 
   return (
     <div>
@@ -21,6 +25,24 @@ export const LoungePage = () => {
           <p className="text-red-500">Nobody is here yet :(</p>
         )}
       </div>
+      <Button
+        disabled={!isGameReady}
+        onClick={async () => await updateStatus('ongoing')}
+      >
+        Play!
+      </Button>
+      <Button
+        disabled={status !== 'ongoing'}
+        onClick={async () => await updateStatus('finished')}
+      >
+        End!
+      </Button>
+      <Button
+        disabled={status === 'waiting'}
+        onClick={async () => await updateStatus('waiting')}
+      >
+        Back to Lounge
+      </Button>
     </div>
   );
 };

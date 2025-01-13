@@ -18,7 +18,7 @@ export const JoinPage = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const { players, join } = useGameStore();
+  const { players } = useGameStore();
   const isFull = players.length === 4;
 
   useEffect(() => {
@@ -46,7 +46,6 @@ export const JoinPage = () => {
     try {
       await signInUser();
       await joinGroup(name, code);
-      join(name);
       setName('');
       setCode('');
       setError({ name: null, code: null });

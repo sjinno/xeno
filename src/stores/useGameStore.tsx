@@ -7,7 +7,6 @@ import { create } from 'zustand';
 interface PrivateGameData {}
 
 interface GameActions {
-  join: (name: string) => void;
   subscribeToPublicData: () => void;
   unsubscribeFromPublicData: () => void;
 }
@@ -19,11 +18,6 @@ let unsubscribe: (() => void) | null = null;
 export const useGameStore = create<GameState>((set) => ({
   players: [],
   status: null,
-
-  join: (name: string) =>
-    set((state) => ({
-      players: [...state.players, name],
-    })),
 
   subscribeToPublicData: () => {
     // Unsubscribe from any existing listener
