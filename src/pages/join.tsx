@@ -98,7 +98,9 @@ export const JoinPage = () => {
         {loading ? 'Joining...' : 'Join'}
       </Button>
       {isFull && (
-        <p className="text-red-500 mt-2 text-center">Player limit reached!</p>
+        <p className="text-green-500 mt-2 text-center">
+          Player limit reached. Time to play!
+        </p>
       )}
     </div>
   );
