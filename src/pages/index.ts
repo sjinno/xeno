@@ -1,2 +1,2 @@
 export * from './join';
-export * from './game';
+export * from './lounge';

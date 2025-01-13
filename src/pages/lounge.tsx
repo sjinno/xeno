@@ -1,11 +1,11 @@
 import { useGameStore } from '@/stores';
 
-export const GamePage = () => {
+export const LoungePage = () => {
   const { players } = useGameStore();
 
   return (
     <div>
-      <h2 className="bg-green-100 font-bold">Game Page</h2>
+      <h2 className="bg-green-100 font-bold">Lounge Page</h2>
       <div>
         <p className="font-semibold">
           Joined players{players.length > 0 && <span> ({players.length})</span>}
