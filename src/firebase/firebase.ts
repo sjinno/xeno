@@ -1,14 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import {
-  getFirestore,
-  connectFirestoreEmulator,
-  addDoc,
-  collection,
-  getDocs,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -44,19 +37,3 @@ const auth = getAuth(app);
 }
 
 export { db, auth };
-
-// // Add a document
-// export async function addData(data: string) {
-//   const docRef = await addDoc(collection(db, 'game_data'), {
-//     data,
-//     createdAt: serverTimestamp(),
-//   });
-//   console.log('Document written with ID:', docRef.id);
-// }
-
-// // Fetch documents
-// export async function fetchData(): Promise<string[]> {
-//   const querySnapshot = await getDocs(collection(db, 'game_data'));
-//   const data = querySnapshot.docs.map((doc) => doc.data().data);
-//   return data;
-// }
