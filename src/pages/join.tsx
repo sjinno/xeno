@@ -2,25 +2,43 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { joinGroup, signInUser } from '@/firebase/auth';
 import { useGameStore } from '@/stores';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+interface ValidationError {
+  name: string | null;
+  code: string | null;
+}
 
 export const JoinPage = () => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ValidationError>({
+    name: null,
+    code: null,
+  });
   const [loading, setLoading] = useState(false);
 
   const { players, join } = useGameStore();
+  const isFull = players.length > 4;
+
+  useEffect(() => {
+    if (players.includes(name)) {
+      setError((prev) => ({ ...prev, name: `${name} is taken.` }));
+    }
+  }, [name]);
 
   const handleJoin = async () => {
-    if (!name.trim() || !code.trim()) {
-      setError('Name and code are required!');
-      return;
-    }
-
-    if (players.includes(name)) {
-      setError('Name is already taken.');
-      return;
+    {
+      let acted = false;
+      if (name.trim().length === 0) {
+        acted = true;
+        setError((prev) => ({ ...prev, name: 'Name is required!' }));
+      }
+      if (code.trim().length === 0) {
+        acted = true;
+        setError((prev) => ({ ...prev, code: 'Code is required!' }));
+      }
+      if (acted) return;
     }
 
     setLoading(true);
@@ -31,9 +49,10 @@ export const JoinPage = () => {
       join(name);
       setName('');
       setCode('');
-      setError(null);
+      setError({ name: null, code: null });
     } catch (error) {
       console.error(`Failed to join: ${error}`);
+      setError((prev) => ({ ...prev, code: (error as Error).message }));
     } finally {
       setLoading(false);
     }
@@ -45,21 +64,42 @@ export const JoinPage = () => {
       <Input
         placeholder="Enter name"
         value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
+        onChange={(e) => {
+          setName(e.currentTarget.value);
+          setError((prev) => ({ ...prev, name: null }));
+        }}
         className="w-52 mx-auto my-4 focus:bg-yellow-100"
         autoCorrect="off"
       />
+      {error.name && <p className="text-red-500 text-center">{error.name}</p>}
       <Input
         placeholder="Enter code"
         value={code}
-        onChange={(e) => setCode(e.currentTarget.value)}
+        onChange={(e) => {
+          setCode(e.currentTarget.value);
+          setError((prev) => ({ ...prev, code: null }));
+        }}
         className="w-52 mx-auto my-4 focus:bg-yellow-100"
         autoCorrect="off"
       />
-      <Button className="block m-auto" onClick={handleJoin} disabled={loading}>
+      {error.code && <p className="text-red-500 text-center">{error.code}</p>}
+      <Button
+        className="block m-auto"
+        onClick={handleJoin}
+        disabled={
+          loading ||
+          name.trim().length === 0 ||
+          code.trim().length === 0 ||
+          error.name !== null ||
+          error.code !== null ||
+          isFull
+        }
+      >
         {loading ? 'Joining...' : 'Join'}
       </Button>
-      {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
+      {isFull && (
+        <p className="text-red-500 mt-2 text-center">Player limit reached!</p>
+      )}
     </div>
   );
 };
