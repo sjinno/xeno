@@ -1,3 +1,4 @@
-export const GAME_PATH = import.meta.env.VITE_GAMES_COLLECTION;
-export const GAME_PUBLIC_ID = import.meta.env.VITE_GAME_PUBLIC_ID;
-export const GAME_PRIVATE_ID = import.meta.env.VITE_GAME_PRIVATE_ID;
+export const GAMES_COLLECTION = import.meta.env.VITE_GAMES_COLLECTION;
+export const GAME_DOCUMENT = import.meta.env.VITE_GAME_DOCUMENT;
+export const PLAYERS_COLLECTION = import.meta.env.VITE_PLAYERS_COLLECTION;
+export const PLAYER_DOCUMENT = import.meta.env.VITE_PLAYER_DOCUMENT;

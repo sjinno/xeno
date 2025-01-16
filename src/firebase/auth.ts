@@ -1,7 +1,17 @@
-import { arrayUnion, doc, getDoc, writeBatch } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  writeBatch,
+} from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { GAME_PATH, GAME_PRIVATE_ID, GAME_PUBLIC_ID } from '@/constants';
+import {
+  GAME_DOCUMENT,
+  GAMES_COLLECTION,
+  PLAYERS_COLLECTION,
+} from '@/constants';
 
 export async function signInUser() {
   if (auth.currentUser !== null) {
@@ -29,32 +39,31 @@ export async function joinGroup(name: string, code: string) {
   // Initialize the batch
   const batch = writeBatch(db);
 
-  const gamePrivateRef = doc(db, GAME_PATH, GAME_PRIVATE_ID);
-  const gamePrivateSnap = await getDoc(gamePrivateRef);
+  const gameRef = doc(db, GAMES_COLLECTION, GAME_DOCUMENT);
+  const gameSnap = await getDoc(gameRef);
 
-  const gamePublicRef = doc(db, GAME_PATH, GAME_PUBLIC_ID);
-
-  if (gamePrivateSnap.exists()) {
-    const groupData = gamePrivateSnap.data();
+  if (gameSnap.exists()) {
+    const gameData = gameSnap.data();
 
     // Validate code
-    if (groupData.code === code) {
+    if (gameData.code === code) {
       const uid = auth.currentUser.uid;
 
-      const playerDetail = {
-        name,
-        uid,
-      };
+      // TODO: subscribe to this!
+      const playerDocRef = await addDoc(collection(db, PLAYERS_COLLECTION), {
+        hand: [],
+        visibleTo: [],
+      });
 
       // Add operations to the batch
       {
-        batch.update(gamePublicRef, {
-          players: arrayUnion(name),
-        });
-
-        // Add user to game playerDetails
-        batch.update(gamePrivateRef, {
-          playerDetails: arrayUnion(playerDetail),
+        batch.update(gameRef, {
+          players: {
+            [uid]: {
+              name,
+              isReady: false,
+            },
+          },
         });
       }
 

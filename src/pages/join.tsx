@@ -20,12 +20,13 @@ export const JoinPage = () => {
   const [loading, setLoading] = useState(false);
 
   const { players } = useGameStore();
-  const isFull = players.length === 4;
+  const names = Object.values(players).map((player) => player.name);
+  const isFull = names.length === 4;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (players.includes(name)) {
+    if (names.includes(name)) {
       setError((prev) => ({ ...prev, name: `${name} is taken.` }));
     }
   }, [name]);
