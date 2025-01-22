@@ -1,14 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { GamePage, JoinPage, LoungePage, ResultPage } from './pages';
+import { GamePage, Home, LoginPage, LoungePage, ResultPage } from './pages';
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<JoinPage />} />
-        <Route path="/lounge" element={<LoungePage />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/game/result" element={<ResultPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/admin/login" element={<LoginPage />} />
+        <Route path="/guest/login" element={<LoungePage />} />
+        {/* NOTE: only admin can create a new game */}
+        <Route path="/create" element={<LoginPage />} />
+        <Route path="/lounge/:gameId" element={<GamePage />} />
+        <Route path="/game/:gameId" element={<GamePage />} />
+        <Route path="/results/:gameId" element={<ResultPage />} />
       </Routes>
     </BrowserRouter>
   );

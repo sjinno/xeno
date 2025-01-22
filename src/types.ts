@@ -14,7 +14,7 @@ export interface GameActions {
   unsubscribeFromPublicData: () => void;
 }
 
-type Uid = string;
+export type Uid = string;
 type Card = string;
 type TargetUid = string;
 
@@ -26,29 +26,18 @@ export interface Turn {
 }
 
 export interface GameState {
-  players: {
-    [key: Uid]: {
-      name: string;
-      isReady: boolean;
-    };
-  };
-  gameStatus: GameStatus;
+  admin: Uid | null;
+  code: string;
   deck: Card[];
-  reincarnationCard: Card | null;
-  shuffleTriggered: boolean;
+  discardPiles: {
+    [key: Uid]: Card[];
+  };
   gameResult: {
     winners: Uid[];
     drawers: Uid[];
     losers: Uid[];
   };
-  turns: Turn[];
-  // Split discard piles into separate object
-  discardPiles: {
-    [key: Uid]: Card[];
-  };
-  // Consider moving logs to subcollection
-  logs: [];
-  // Restructure view grants
+  gameStatus: GameStatus;
   handVisibility: {
     [key: TargetUid]: {
       viewers: Uid[];
@@ -56,4 +45,14 @@ export interface GameState {
       type: 'individual' | 'all';
     };
   };
+  logs: [];
+  players: {
+    [key: Uid]: {
+      name: string;
+      isReady: boolean;
+    };
+  };
+  reincarnationCard: Card | null;
+  shuffleTriggered: boolean;
+  turns: Turn[];
 }
